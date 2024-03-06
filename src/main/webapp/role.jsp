@@ -32,16 +32,16 @@ if(session.getAttribute("login") == null){
 		          <a class="nav-link active" aria-current="page" href="home.jsp">Home</a>
 		        </li>
 		        <li class="nav-item">
-		          <a class="nav-link active" aria-current="page" href="ListUser.jsp">Table Users</a>
+		          <a class="nav-link active" aria-current="page" href="#">Table Users</a>
 		        </li>
-		        <li class="nav-item">
+		       <li class="nav-item">
 		          <a class="nav-link" href="role.jsp">Role</a>
 		        </li>
 		        <li class="nav-item">
 		          <a class="nav-link" href="#">Permission</a>
 		        </li>
 		      </ul>
-		       <div class="d-flex mt-2">
+		      <div class="d-flex mt-2">
 		          <h6 class="nav-link text-black" >Login  : <%= LoginUser %></h6>
 			      <form method="POST" action="logout">
 			        <input type="submit" value="logout" >
@@ -51,39 +51,69 @@ if(session.getAttribute("login") == null){
 		  </div>
 		</nav>
 		
-		
-		<div id="carouselExampleCaptions" class="carousel slide">
-		  <div class="carousel-indicators">
-		    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-		    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-		    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			<% 
+			Connection con = null;
+			    String url = "jdbc:mysql://localhost:3306/jee_etudiant";
+		        String user = "root";
+		        String pwd = "";
+		        try {
+		            Class.forName("com.mysql.cj.jdbc.Driver");
+		             con = DriverManager.getConnection(url, user, pwd);
+		        } catch (Exception e) {
+		            System.out.println(e);
+		        }
+			
+			if(request.getAttribute("errorMessage") != null){ %>
+				<div class="alert alert-danger" role="alert">
+				 <%= request.getAttribute("errorMessage") %>
+				</div>
+			<% } %>
+	
+		<form method="POST" action="role">
+	      <h1 class="mb-3 mt-2">Role To User</h1>
+			<% if(request.getAttribute("errorMessage") != null){ %>
+			<div class="alert alert-danger" role="alert">
+			 <%= request.getAttribute("errorMessage") %>
+			</div>
+			<% } %>
+	      <div class="mb-3">
+		    <label for="exampleInputEmail1" class="form-label">User</label>
+		    <select class="form-select" aria-label="Default select example">
+		 	  <option selected>select user</option>
+		 	  <% 
+			 	 if (con != null) {
+		                PreparedStatement pst = con.prepareStatement("SELECT * FROM users");
+		                ResultSet rs = pst.executeQuery();
+		                while (rs.next()) {
+		        %>
+		         <option value="1"><%= rs.getString(2)  %></option>                  
+		        <%
+		                } 
+		            }
+		 	  %>
+			</select>
 		  </div>
-		  <div class="carousel-inner">
-		    <div class="carousel-item active">
-		      <img src="../images/img1.jpg" class="d-block w-100" alt="...">
-		      <div class="carousel-caption d-none d-md-block">
-		        <h5>First slide label</h5>
-		        <p>Some representative placeholder content for the first slide.</p>
-		      </div>
-		    </div>
-		    <div class="carousel-item">
-		      <img src="C:/Users/slhhoub/eclipse-workspace/authJEE/src/main/webapp/images/img1.jpg" class="d-block w-100" alt="...">
-		      <div class="carousel-caption d-none d-md-block">
-		        <h5>Second slide label</h5>
-		        <p>Some representative placeholder content for the second slide.</p>
-		      </div>
-		    </div>
+		  <div class="mb-3">
+		    <label for="exampleInputEmail1" class="form-label">Roles</label>
+		     <select class="form-select" aria-label="Default select example">
+		 	  <option selected>select role</option>
+			   <% 
+			 	 if (con != null) {
+		                PreparedStatement pst = con.prepareStatement("SELECT * FROM role");
+		                ResultSet rs = pst.executeQuery();
+		                while (rs.next()) {
+		        %>
+		         <option value="1"><%= rs.getString(2)  %></option>                  
+		        <%
+		                } 
+		                con.close();
+		            }
+		 	  %>
+			</select>
 		  </div>
-		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Previous</span>
-		  </button>
-		  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Next</span>
-		  </button>
-		</div>
-		
+		  <button type="submit" class="btn btn-primary">save</button>
+        </form>
+	
 		  
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

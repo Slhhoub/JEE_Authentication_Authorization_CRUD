@@ -51,22 +51,12 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>DeleteUser</display-name>
-    <servlet-name>DeleteUser</servlet-name>
-    <servlet-class>Servlet.DeleteUser</servlet-class>
+    <display-name>RoleServlet</display-name>
+    <servlet-name>RoleServlet</servlet-name>
+    <servlet-class>Servlet.RoleServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DeleteUser</servlet-name>
-    <url-pattern>/DeleteUser</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>DeleteUserUser</display-name>
-    <servlet-name>DeleteUserUser</servlet-name>
-    <servlet-class>Servlet.DeleteUserUser</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DeleteUserUser</servlet-name>
-    <url-pattern>/DeleteUserUser</url-pattern>
+    <servlet-name>RoleServlet</servlet-name>
+    <url-pattern>/RoleServlet</url-pattern>
   </servlet-mapping>
 </web-app>
