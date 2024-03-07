@@ -36,12 +36,13 @@ public class LoginServlet extends HttpServlet {
         Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
+        
+        
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, user, pwd);
             if(con != null) {
-            	System.out.println("success connection db ");
             	pst = con.prepareStatement("SELECT * FROM users WHERE login=? AND password=?");
             	pst.setString(1, login);
             	pst.setString(2, psw);

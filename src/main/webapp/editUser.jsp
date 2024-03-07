@@ -51,55 +51,57 @@ if(session.getAttribute("login") == null){
 		  </div>
 		</nav>
 		
-			<% if(request.getAttribute("errorMessage") != null){ %>
+		<% if(request.getAttribute("errorMessage") != null){ %>
+			<div class="alert alert-danger" role="alert">
+			 <%= request.getAttribute("errorMessage") %>
+			</div>
+		<% } %>
+		<form method="POST" action="editUser">
+		     <h1 class="mb-3 mt-2">Edit User</h1>
+		 		<% if(request.getAttribute("errorMessage") != null){ %>
 				<div class="alert alert-danger" role="alert">
 				 <%= request.getAttribute("errorMessage") %>
 				</div>
-			<% } %>
-	
-		<table class="table text-center">
-		  <thead>
-		    <tr>
-		      <th scope="col">Username</th>
-		      <th scope="col">Email</th>
-		      <th scope="col">Action</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  <%
-		    String url = "jdbc:mysql://localhost:3306/jee_etudiant";
-	        String user = "root";
-	        String pwd = "";
-	        try {
-	            Class.forName("com.mysql.cj.jdbc.Driver");
-	            Connection con = DriverManager.getConnection(url, user, pwd);
-	            if (con != null) {
-	                PreparedStatement pst = con.prepareStatement("SELECT * FROM users");
-	                ResultSet rs = pst.executeQuery();
-	                while (rs.next()) {
-	        %>
-				        <tr>
-					      <td><a href="editUser.jsp?id=<%= rs.getString(1)  %>" > <%= rs.getString(2)  %> </a> </td>
-					      <td><%= rs.getString(3)  %></td>
-					      <td>
-					          <form method="POST" action="DeleteUser?id=<%= rs.getString(1)  %> ">
-						        <input type="submit" class="btn btn-danger" value="Delete" >
-						      </form>
-					      </td>
-					    </tr>            
-	       <%
-	                } 
-	                con.close();
-	            }
-	        } catch (Exception e) {
-	            System.out.println(e);
-	        }
-		  %>
-
-		   
-		  </tbody>
-		</table>
-		  
+				<% }
+		 		
+		 		String id = request.getParameter("id");
+		 		
+		 		 String url = "jdbc:mysql://localhost:3306/jee_etudiant";
+			        String user = "root";
+			        String pwd = "";
+			        try {
+			            Class.forName("com.mysql.cj.jdbc.Driver");
+			            Connection con = DriverManager.getConnection(url, user, pwd);
+			            if (con != null) {
+			                PreparedStatement pst = con.prepareStatement("SELECT * FROM users WHERE id = ?");
+			                pst.setString(1, id);
+			                ResultSet rs = pst.executeQuery();
+			                while (rs.next()) {
+			        %>
+			        <input type="hidden" name="id" value=" <%= rs.getString(1)  %>" />
+				      <div class="mb-3">
+					    <label for="exampleInputEmail1" class="form-label">Username</label>
+					    <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  value=" <%= rs.getString(2)  %> ">
+					  </div>
+					  <div class="mb-3">
+					    <label for="exampleInputEmail1" class="form-label">Email address</label>
+					    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<%= rs.getString(3)  %>">
+					  </div>
+					  <div class="mb-3">
+					    <label for="exampleInputPassword1" class="form-label">Password</label>
+					    <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+					  </div>
+					  <button type="submit" class="btn btn-primary">edit</button>
+			    </form>
+		     <%
+			                } 
+			                con.close();
+			            }
+			        } catch (Exception e) {
+			            System.out.println(e);
+			        }
+		 		
+		 		%>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
